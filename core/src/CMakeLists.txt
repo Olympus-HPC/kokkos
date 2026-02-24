@@ -87,6 +87,15 @@ if(KOKKOS_ENABLE_SYCL)
   append_glob(KOKKOS_CORE_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/SYCL/*.hpp)
 endif()
 
+if (KOKKOS_ENABLE_JIT)
+  if (NOT CMAKE_CXX_COMPILER_ID MATCHES Clang)
+    message(FATAL_ERROR "Kokkos requires an LLVM based compiler in order to support JIT compilation, but found ${CMAKE_CXX_COMPILER_ID}")
+  endif()
+   append_glob(KOKKOS_CORE_HEADERS
+    "${PROTEUS_INSTALL_DIR}/include"
+    )
+endif()
+
 if(NOT desul_FOUND)
   if(KOKKOS_ENABLE_CUDA)
     append_glob(KOKKOS_CORE_SRCS ${KOKKOS_SOURCE_DIR}/tpls/desul/src/Lock_Array_CUDA.cpp)

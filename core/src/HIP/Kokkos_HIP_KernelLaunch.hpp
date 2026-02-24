@@ -38,7 +38,7 @@ namespace Impl {
 
 // The hip_parallel_launch_*_memory code is identical to the cuda code
 template <typename DriverType>
-__global__ static void hip_parallel_launch_constant_memory() {
+__global__ KOKKOS_JIT_COMPILE static void hip_parallel_launch_constant_memory() {
   const DriverType &driver = *(reinterpret_cast<const DriverType *>(
       kokkos_impl_hip_constant_memory_buffer));
 
@@ -46,7 +46,7 @@ __global__ static void hip_parallel_launch_constant_memory() {
 }
 
 template <typename DriverType, unsigned int maxTperB, unsigned int minBperSM>
-__global__ __launch_bounds__(
+__global__ KOKKOS_JIT_COMPILE __launch_bounds__(
     maxTperB, minBperSM) static void hip_parallel_launch_constant_memory() {
   const DriverType &driver = *(reinterpret_cast<const DriverType *>(
       kokkos_impl_hip_constant_memory_buffer));
@@ -55,13 +55,13 @@ __global__ __launch_bounds__(
 }
 
 template <class DriverType>
-__global__ static void hip_parallel_launch_local_memory(
+__global__ KOKKOS_JIT_COMPILE static void hip_parallel_launch_local_memory(
     const DriverType driver) {
   driver();
 }
 
 template <class DriverType, unsigned int maxTperB, unsigned int minBperSM>
-__global__ __launch_bounds__(
+__global__ KOKKOS_JIT_COMPILE __launch_bounds__(
     maxTperB,
     minBperSM) static void hip_parallel_launch_local_memory(const DriverType
                                                                 driver) {
@@ -69,13 +69,13 @@ __global__ __launch_bounds__(
 }
 
 template <typename DriverType>
-__global__ static void hip_parallel_launch_global_memory(
+__global__ KOKKOS_JIT_COMPILE static void hip_parallel_launch_global_memory(
     const DriverType *driver) {
   driver->operator()();
 }
 
 template <typename DriverType, unsigned int maxTperB, unsigned int minBperSM>
-__global__ __launch_bounds__(
+__global__ KOKKOS_JIT_COMPILE __launch_bounds__(
     maxTperB,
     minBperSM) static void hip_parallel_launch_global_memory(const DriverType
                                                                  *driver) {

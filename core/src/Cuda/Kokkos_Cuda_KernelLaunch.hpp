@@ -62,7 +62,7 @@ namespace Impl {
 
 #ifndef KOKKOS_IMPL_CUDA_USE_GRID_CONSTANT
 template <class DriverType>
-__global__ static void cuda_parallel_launch_constant_memory() {
+__global__ KOKKOS_JIT_COMPILE static void cuda_parallel_launch_constant_memory() {
   const DriverType& driver =
       *((const DriverType*)kokkos_impl_cuda_constant_memory_buffer);
 
@@ -70,7 +70,7 @@ __global__ static void cuda_parallel_launch_constant_memory() {
 }
 
 template <class DriverType, unsigned int maxTperB, unsigned int minBperSM>
-__global__ __launch_bounds__(
+__global__ KOKKOS_JIT_COMPILE __launch_bounds__(
     maxTperB, minBperSM) static void cuda_parallel_launch_constant_memory() {
   const DriverType& driver =
       *((const DriverType*)kokkos_impl_cuda_constant_memory_buffer);
@@ -79,13 +79,13 @@ __global__ __launch_bounds__(
 }
 
 template <class DriverType>
-__global__ static void cuda_parallel_launch_local_memory(
+__global__ KOKKOS_JIT_COMPILE static void cuda_parallel_launch_local_memory(
     const DriverType driver) {
   driver();
 }
 
 template <class DriverType, unsigned int maxTperB, unsigned int minBperSM>
-__global__ __launch_bounds__(
+__global__ KOKKOS_JIT_COMPILE __launch_bounds__(
     maxTperB,
     minBperSM) static void cuda_parallel_launch_local_memory(const DriverType
                                                                  driver) {
@@ -93,13 +93,13 @@ __global__ __launch_bounds__(
 }
 #else
 template <class DriverType>
-__global__ static void cuda_parallel_launch_local_memory(
+__global__ KOKKOS_JIT_COMPILE static void cuda_parallel_launch_local_memory(
     const __grid_constant__ DriverType driver) {
   driver();
 }
 
 template <class DriverType, unsigned int maxTperB, unsigned int minBperSM>
-__global__ __launch_bounds__(
+__global__ KOKKOS_JIT_COMPILE __launch_bounds__(
     maxTperB,
     minBperSM) static void cuda_parallel_launch_local_memory(const __grid_constant__
                                                                  DriverType
@@ -109,13 +109,13 @@ __global__ __launch_bounds__(
 #endif  // KOKKOS_IMPL_CUDA_USE_GRID_CONSTANT
 
 template <class DriverType>
-__global__ static void cuda_parallel_launch_global_memory(
+__global__ KOKKOS_JIT_COMPILE static void cuda_parallel_launch_global_memory(
     const DriverType* driver) {
   driver->operator()();
 }
 
 template <class DriverType, unsigned int maxTperB, unsigned int minBperSM>
-__global__ __launch_bounds__(
+__global__ KOKKOS_JIT_COMPILE __launch_bounds__(
     maxTperB,
     minBperSM) static void cuda_parallel_launch_global_memory(const DriverType*
                                                                   driver) {
